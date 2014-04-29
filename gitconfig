@@ -1,0 +1,11 @@
+[user]
+	name = Siafu
+	email = Siafudev@gmail.com
+[alias]
+	co = checkout
+[core]
+	editor = subl -w
+[push]
+	default = current
+[credential]
+	helper = osxkeychain
