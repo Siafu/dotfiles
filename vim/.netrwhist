@@ -1,4 +1,6 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =2
-let g:netrw_dirhist_1='/Users/kambuinurse/.oh-my-zsh'
-let g:netrw_dirhist_2='/Users/kambuinurse/.oh-my-zsh/plugins'
+let g:netrw_dirhist_cnt =4
+let g:netrw_dirhist_1='/Users/kambuinurse/Projects/Majige/app/assets/javascripts'
+let g:netrw_dirhist_2='/Users/kambuinurse/Projects/Majige'
+let g:netrw_dirhist_3='/Users/kambuinurse/Projects/Majige/.rbricks'
+let g:netrw_dirhist_4='/Users/kambuinurse/Projects/Majige'

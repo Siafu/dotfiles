@@ -15,7 +15,7 @@ set numberwidth=5
 
 syntax match Todo /\s\+$/
 
-set nocompatible  
+set nocompatible
 
 "autocmd BufWritePre *.rb,*.haml, *erb, *js, :%s/\s\+$//e
 
@@ -65,7 +65,7 @@ set laststatus=2                  " Show the status line all the time
 set statusline=[%n]\ %<%.99f\ %h%w%m%r%y\ %{exists('*CapsLockStatusline')?CapsLockStatusline():''}%=%-16(\ %l,%c-%v\ %)%P
 
 " Remove trailing whitespace on save for ruby files.
-au BufWritePre *.rb :%s/\s\+$//e
+":au BufWritePre *.rb :%s/\s\+$//e
 
 " Or use vividchalk
 "colorscheme topfunky-light
