@@ -69,7 +69,6 @@ set directory=$HOME/.vim/tmp//,.  " Keep swap files in one location
 set autochdir
 set laststatus=2                  " Show the status line all the time
 nnoremap <F3> :set hlsearch!<CR>
-noremap <F2> :Autoformat<CR>
 
 "          FileTypes
 "          HTML
