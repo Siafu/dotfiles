@@ -1,0 +1,19 @@
+colorscheme material
+set guifont=Bitstream\ Vera\ Sans\ Mono\ PNFT\ M:h12:b
+set antialias                     " MacVim: smooth fonts.
+set guioptions-=T
+set guioptions-=r
+"Window Size
+if has("gui_running")
+  " GUI is running or is about to start.
+  " Maximize gvim window (for an alternative on Windows, see simalt below).
+  set lines=999 columns=999
+else
+  " This is console Vim.
+  if exists("+lines")
+    set lines=50
+  endif
+  if exists("+columns")
+    set columns=100
+  endif
+endif

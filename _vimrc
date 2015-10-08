@@ -1,0 +1,275 @@
+" Plugins
+call plug#begin('~/.vim/plugged')
+" Make sure you use single quotes
+" Javascript syntax
+Plug 'elzr/vim-json'
+Plug 'burnettk/vim-angular'
+Plug 'https://github.com/othree/javascript-libraries-syntax.vim'
+Plug 'jelera/vim-javascript-syntax'
+Plug 'scrooloose/syntastic'
+Plug 'vim-javascript'
+"TypeScript syntax
+Plug 'https://github.com/leafgarland/typescript-vim.git'
+Plug 'quramy/tsuquyomi'
+Plug 'https://github.com/clausreinke/typescript-tools.vim.git'
+" Formatting plugins
+Plug 'godlygeek/tabular'
+Plug 'shougo/neocomplete'
+Plug 'shougo/neosnippet'
+Plug 'shougo/neosnippet-snippets'
+Plug 'sirver/ultisnips'
+Plug 'townk/vim-autoclose'
+Plug 'vim-scripts/closetag.vim'
+Plug 'edsono/vim-matchit'
+" Look & Feel
+Plug 'ryanoasis/vim-devicons'
+Plug 'gilgigilgil/anderson.vim'
+Plug 'bling/vim-airline'
+" Movement / Navigation
+Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdcommenter'
+Plug 'kien/ctrlp.vim'
+Plug 'https://github.com/marijnh/tern_for_vim.git'
+" Utils
+Plug 'tpope/vim-fugitive'
+Plug 'KabbAmine/gulp-vim'
+Plug 'mattn/emmet-vim'
+" Add plugins to &runtimepath
+call plug#end()
+"          Defaults
+autocmd! bufwritepost $HOME/_vimrc silent! source % " AutoSave
+let mapleader=","                 " Mapp leader key 
+set nocompatible                  " Must come first because it changes other options.
+syntax enable                     " Turn on syntax highlighting.
+filetype plugin indent on         " Turn on file type detection.
+runtime macros/matchit.vim        " Load the matchit plugin.
+set showcmd                       " Display incomplete commands.
+set showmode                      " Display the mode you're in
+set encoding=utf-8
+set hidden                        " Handle multiple buffers better.
+set backspace=indent,eol,start    " Intuitive backspacing.
+set wildmenu                      " Enhanced command line completion.
+set wildmode=list:longest         " Complete files like a shell.
+set ignorecase                    " Case-insensitive searching.
+set smartcase                     " But case-sensitive if expression contains a capital letter.
+set number                        " Show line numbers.
+set ruler                         " Show cursor position.
+set incsearch                     " Highlight matches as you type.
+set hlsearch                      " Highlight matches.
+set cursorline                    " Highlight the screen line of the cursor
+set wrap                          " Turn on line wrapping.
+set scrolloff=3                   " Show 3 lines of context around the cursor.
+set title                         " Set the terminal's title
+set visualbell                    " No beeping.
+set nobackup                      " Don't make a backup before overwriting a file.
+set nowritebackup                 " And again.
+set directory=$HOME/.vim/tmp//,.  " Keep swap files in one location
+set autochdir
+set laststatus=2                  " Show the status line all the time
+nnoremap <F3> :set hlsearch!<CR>
+
+"          FileTypes
+"          HTML
+set matchpairs+=<:>
+set showmatch
+set matchtime=3
+"          XML
+au BufRead,BufNewFile *.config set filetype=xml     " .config files as XML files
+"          TypeScript
+let g:typescript_compiler_options = '-sourcemap'
+autocmd FileType typescript setlocal completeopt-=menu
+autocmd FileType typescript setlocal completeopt+=menu,preview
+autocmd QuickFixCmdPost [^l]* nested cwindow
+autocmd QuickFixCmdPost    l* nested lwindow
+au BufRead,BufNewFile *.ts setlocal filetype=typescript
+set rtp+=$HOME/.vim/plugged/typescript-tools.vim/
+"         Powerline
+let g:airline_powerline_fonts = 1                   " Power line fonts
+let g:airline#extensions#tabline#enabled = 1        " Enable the list of buffers
+let g:airline#extensions#tabline#fnamemod = ':t'    " Show just the filename
+"         Buffer Tabs
+nmap <leader>T :enew<cr>                            " New tab
+nmap <leader>l :bnext<CR>                           " Move to the next buffer
+nmap <leader>h :bprevious<CR>                       " Move to the previous buffer
+nmap <leader>bq :bp <BAR> bd #<CR>                  " This replicates the idea of closing a tab
+nmap <leader>bl :ls<CR>                             " Show all open buffers and their status
+"         Easy window movement
+nmap <silent> <C-h> :wincmd h<CR>
+nmap <silent> <C-j> :wincmd j<CR>
+nmap <silent> <C-k> :wincmd k<CR>
+nmap <silent> <C-l> :wincmd l<CR>
+"         Split window
+nmap <leader>v :wincmd v<CR>
+nmap <silent> <C-s> :wincmd s<CR>
+"         Close window
+nmap <silent> <C-c> :wincmd c<CR>
+
+"         NeoComplete Note: This option must set it in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
+let g:acp_enableAtStartup = 0                           " Disable AutoComplPop.
+let g:neocomplete#enable_at_startup = 1                 " Use neocomplete.
+let g:neocomplete#enable_smart_case = 1                 " Use smartcase.
+let g:neocomplete#sources#syntax#min_keyword_length = 3 " Set minimum syntax keyword length.
+let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+"         Define dictionary.
+let g:neocomplete#sources#dictionary#dictionaries = {
+			\ 'default' : '',
+			\ 'vimshell' : $HOME.'/.vimshell_hist',
+			\ 'scheme' : $HOME.'/.gosh_completions'
+			\ }
+"         Define keyword.
+if !exists('g:neocomplete#keyword_patterns')
+	let g:neocomplete#keyword_patterns = {}
+endif
+let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+
+"         Plugin key-mappings.
+inoremap <expr><C-g>     neocomplete#undo_completion()
+inoremap <expr><C-l>     neocomplete#complete_common_string()
+"         Recommended key-mappings.
+" <CR>: close popup and save indent.
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>  
+function! s:my_cr_function()
+	return neocomplete#close_popup() . "\<CR>"
+"         For no inserting <CR> key.
+"         return pumvisible() ? neocomplete#close_popup() : "\<CR>"
+endfunction
+"         <TAB>: completion.
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+"         <C-h>, <BS>: close popup and delete backword char.
+inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><C-y>  neocomplete#close_popup()
+inoremap <expr><C-e>  neocomplete#cancel_popup()
+inoremap <expr><Space> pumvisible() ? neocomplete#close_popup() : "\<Space>" " Close popup by <Space>.
+"         Enable omni completion.
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+
+"        Enable heavy omni completion.
+if !exists('g:neocomplete#sources#omni#input_patterns')
+	let g:neocomplete#sources#omni#input_patterns = {}
+endif
+
+"        NERDTree setup
+let g:NERDTreeWinSize = 40
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+nnoremap <leader>e :NERDTree .<CR>
+let NERDTreeQuitOnOpen = 1
+let NERDTreeShowHidden = 1
+
+" Auto change directory
+let NERDTreeChDirMode = 2
+autocmd BufEnter * lcd %:p:h
+map <leader>r :NERDTreeFind<cr>
+
+" NERDTress File highlighting
+function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
+exec 'autocmd FileType nerdtree highlight ' . a:extension .' ctermbg='. a:bg .' ctermfg='. a:fg .' guibg='. a:guibg .' guifg='. a:guifg
+exec 'autocmd FileType nerdtree syn match ' . a:extension .' #^\s\+.*'. a:extension .'$#'
+endfunction
+
+call NERDTreeHighlightFile('jade', 'green', 'none', 'green', '#151515')
+call NERDTreeHighlightFile('ini', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('md', 'blue', 'none', '#3366FF', '#151515')
+call NERDTreeHighlightFile('yml', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('config', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('conf', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('json', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('html', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('styl', 'cyan', 'none', 'cyan', '#151515')
+call NERDTreeHighlightFile('css', 'cyan', 'none', 'cyan', '#151515')
+call NERDTreeHighlightFile('coffee', 'Red', 'none', 'red', '#151515')
+call NERDTreeHighlightFile('js', 'Red', 'none', '#ffa500', '#151515')
+call NERDTreeHighlightFile('php', 'Magenta', 'none', '#ff00ff', '#151515')
+call NERDTreeHighlightFile('ds_store', 'Gray', 'none', '#686868', '#151515')
+call NERDTreeHighlightFile('gitconfig', 'Gray', 'none', '#686868', '#151515')
+call NERDTreeHighlightFile('gitignore', 'Gray', 'none', '#686868', '#151515')
+call NERDTreeHighlightFile('bashrc', 'Gray', 'none', '#686868', '#151515')
+call NERDTreeHighlightFile('bashprofile', 'Gray', 'none', '#686868', '#151515')
+
+"Vim-Angular
+let g:angular_source_directory = 'src/client'
+let g:angular_test_directory   = 'test/units'
+
+"Neo Snippets
+" Plugin key-mappings.
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
+
+" SuperTab like snippets behavior.
+imap <expr><TAB>
+ \ pumvisible() ? "\<C-n>" :
+ \ neosnippet#expandable_or_jumpable() ?
+ \    "\<TAB>" : "\<Plug>(neosnippet_expand_or_jump)"
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+			\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+" For conceal markers.
+if has('conceal')
+	set conceallevel=2 concealcursor=niv
+endif
+" Enable snipMate compatibility feature.
+let g:neosnippet#enable_snipmate_compatibility = 1
+" Tell Neosnippet about the other snippets
+let g:neosnippet#snippets_directory='~/.vim/plugged/neosnippet-snippets/neosnippets/javascript'
+" Ultisnips
+" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
+" Tabular config
+nmap <Leader>a= :Tabularize /=<CR>
+vmap <Leader>a= :Tabularize /=<CR>
+nmap <Leader>a: :Tabularize /:\zs<CR>
+vmap <Leader>a: :Tabularize /:\zs<CR>
+
+" Ctrl P
+let g:ctrlp_working_path_mode = 'ra'
+set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe
+let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git|bower_components|iisnode'
+
+"Syntax libs
+let g:used_javascript_libs = 'angularjs,underscore,lodash'
+autocmd BufReadPre *.js let b:javascript_lib_use_underscore = 1
+autocmd BufReadPre *.js let b:javascript_lib_use_lodash = 1
+autocmd BufReadPre *.js let b:javascript_lib_use_angularjs = 1
+
+" Fugitive
+nnoremap <leader>gr :Gread<cr>
+nnoremap <leader>gw :Gwrite<cr>
+nnoremap <leader>gb :Gblame<cr>
+nnoremap <leader>gc :Gcommit<cr>
+nnoremap <leader>gd :Gdiff<cr>
+nnoremap <leader>gl :Glog<cr>
+nnoremap <leader>gp :Git push<cr>
+nnoremap <leader>gs :Gstatus<cr>
+
+" Syntastic
+" Better :sign interface symbols
+let g:syntastic_error_symbol = '?'
+let g:syntastic_warning_symbol = '!'
+let g:syntastic_style_error_symbol = '?'
+let g:syntastic_style_warning_symbol = '!'
+" Check on buffer open
+let g:syntastic_check_on_open = 1
+" Always put errors in the location list
+let g:syntastic_always_populate_loc_list = 1
+" Aggregate errors for multiple checkers
+let g:syntastic_aggregate_errors = 1
+" Don't check on write+quit
+let g:syntastic_javascript_checkers = ['eslint','jshint','jscs']
+let g:syntastic_javascript_eslint_args = '--rulesdir "$HOME"/.eslintrc'
+let g:syntastic_javascript_jscs_args = '--rulesdir "$HOME"/.jscs'
+let g:syntastic_javascript_jshint_args = '--rulesdir "$HOME"/.jshintrc'
+" On by default, turn it off for html
+let g:syntastic_mode_map = { 'mode': 'active',
+                           \ 'active_filetypes': [],
+                           \ 'passive_filetypes': ['html']}
+" Refresh devicons
+if exists("g:loaded_webdevicons")
+    call webdevicons#refresh()
+endif
