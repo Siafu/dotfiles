@@ -8,6 +8,8 @@ Plug 'https://github.com/othree/javascript-libraries-syntax.vim'
 Plug 'jelera/vim-javascript-syntax'
 Plug 'scrooloose/syntastic'
 Plug 'vim-javascript'
+Plug 'maksimr/vim-jsbeautify'
+Plug 'einars/js-beautify'
 "TypeScript syntax
 Plug 'https://github.com/leafgarland/typescript-vim.git'
 Plug 'quramy/tsuquyomi'
@@ -67,13 +69,24 @@ set directory=$HOME/.vim/tmp//,.  " Keep swap files in one location
 set autochdir
 set laststatus=2                  " Show the status line all the time
 nnoremap <F3> :set hlsearch!<CR>
+noremap <F2> :Autoformat<CR>
 
 "          FileTypes
 "          HTML
 set matchpairs+=<:>
 set showmatch
 set matchtime=3
+autocmd FileType html vnoremap <buffer> <c-f> :call RangeHtmlBeautify()<cr>
+autocmd FileType html noremap <buffer> <c-f> :call HtmlBeautify()<cr>
+"          Javascript
+map <c-f> :call JsBeautify()<cr>
+autocmd FileType javascript noremap <buffer>  <c-f> :call JsBeautify()<cr>
+autocmd FileType javascript vnoremap <buffer>  <c-f> :call RangeJsBeautify()<cr>
+"          for css or scss
+autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
+autocmd FileType css vnoremap <buffer> <c-f> :call RangeCSSBeautify()<cr>
 "          XML
+autocmd FileType xml noremap <buffer> <c-f> :call HtmlBeautify()<cr>
 au BufRead,BufNewFile *.config set filetype=xml     " .config files as XML files
 "          TypeScript
 let g:typescript_compiler_options = '-sourcemap'
