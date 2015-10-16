@@ -8,7 +8,6 @@ Plug 'https://github.com/othree/javascript-libraries-syntax.vim'
 Plug 'jelera/vim-javascript-syntax'
 Plug 'scrooloose/syntastic'
 Plug 'vim-javascript'
-Plug 'nathanaelkane/vim-indent-guides'
 Plug 'maksimr/vim-jsbeautify'
 Plug 'einars/js-beautify'
 "TypeScript syntax
@@ -39,8 +38,7 @@ Plug 'KabbAmine/gulp-vim'
 Plug 'mattn/emmet-vim'
 " Add plugins to &runtimepath
 call plug#end()
-"          Defaults
-autocmd! bufwritepost $HOME/_vimrc silent! source % " AutoSave
+" Defaults
 let mapleader=","                 " Mapp leader key 
 set nocompatible                  " Must come first because it changes other options.
 syntax enable                     " Turn on syntax highlighting.
@@ -69,40 +67,50 @@ set nowritebackup                 " And again.
 set directory=$HOME/.vim/tmp//,.  " Keep swap files in one location
 set autochdir
 set laststatus=2                  " Show the status line all the time
-set ts=2 sw=2 et
-let g:indent_guides_start_level=2
-nnoremap <F3> :set hlsearch!<CR>
-" Shortcut to rapidly toggle `set list`
-nmap <leader>i :set list!<CR>
-" Use the same symbols as TextMate for tabstops and EOLs
-set listchars=tab:▸\ ,eol:¬
-
-let g:indent_guides_auto_colors = 0
-autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=red   ctermbg=3
-autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=4
-"          FileTypes
-"          HTML
+set expandtab
+set shiftwidth=2
+set softtabstop=2
 set matchpairs+=<:>
 set showmatch
 set matchtime=3
-autocmd FileType html vnoremap <buffer> <c-f> :call RangeHtmlBeautify()<cr>
-autocmd FileType html noremap <buffer> <c-f> :call HtmlBeautify()<cr>
-"          Javascript
-map <c-f> :call JsBeautify()<cr>
-autocmd FileType javascript noremap <buffer>  <c-f> :call JsBeautify()<cr>
-autocmd FileType javascript vnoremap <buffer>  <c-f> :call RangeJsBeautify()<cr>
-"          for css or scss
+
+autocmd! bufwritepost $HOME/_vimrc silent! source % " AutoSave
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
 autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
 autocmd FileType css vnoremap <buffer> <c-f> :call RangeCSSBeautify()<cr>
-"          XML
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType html vnoremap <buffer> <c-f> :call RangeHtmlBeautify()<cr>
+autocmd FileType html noremap <buffer> <c-f> :call HtmlBeautify()<cr>
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType javascript noremap <buffer>  <c-f> :call JsBeautify()<cr>
+autocmd FileType javascript vnoremap <buffer>  <c-f> :call RangeJsBeautify()<cr>
+autocmd FileType typescript setlocal completeopt-=menu
+autocmd FileType typescript setlocal completeopt+=menu,preview
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 autocmd FileType xml noremap <buffer> <c-f> :call HtmlBeautify()<cr>
+autocmd QuickFixCmdPost [^l]* nested cwindow
+autocmd QuickFixCmdPost    l* nested lwindow
+"NERDTree setup
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+autocmd BufEnter * lcd %:p:h
+"NERDTree File highlighting
+function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
+exec 'autocmd FileType nerdtree highlight ' . a:extension .' ctermbg='. a:bg .' ctermfg='. a:fg .' guibg='. a:guibg .' guifg='. a:guifg
+exec 'autocmd FileType nerdtree syn match ' . a:extension .' #^\s\+.*'. a:extension .'$#'
+endfunction
+"Syntax
+autocmd BufReadPre *.js let b:javascript_lib_use_underscore = 1
+autocmd BufReadPre *.js let b:javascript_lib_use_lodash = 1
+autocmd BufReadPre *.js let b:javascript_lib_use_angularjs = 1
+
+nnoremap <F3> :set hlsearch!<CR>
+map <c-f> :call JsBeautify()<cr>
+"          for css or scss
+"          XML
 au BufRead,BufNewFile *.config set filetype=xml     " .config files as XML files
 "          TypeScript
 let g:typescript_compiler_options = '-sourcemap'
-autocmd FileType typescript setlocal completeopt-=menu
-autocmd FileType typescript setlocal completeopt+=menu,preview
-autocmd QuickFixCmdPost [^l]* nested cwindow
-autocmd QuickFixCmdPost    l* nested lwindow
 au BufRead,BufNewFile *.ts setlocal filetype=typescript
 set rtp+=$HOME/.vim/plugged/typescript-tools.vim/
 "         Powerline
@@ -163,11 +171,6 @@ inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
 inoremap <expr><C-y>  neocomplete#close_popup()
 inoremap <expr><C-e>  neocomplete#cancel_popup()
 inoremap <expr><Space> pumvisible() ? neocomplete#close_popup() : "\<Space>" " Close popup by <Space>.
-"         Enable omni completion.
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
 "        Enable heavy omni completion.
 if !exists('g:neocomplete#sources#omni#input_patterns')
@@ -176,22 +179,13 @@ endif
 
 "        NERDTree setup
 let g:NERDTreeWinSize = 40
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 nnoremap <leader>e :NERDTree .<CR>
 let NERDTreeQuitOnOpen = 1
 let NERDTreeShowHidden = 1
 
 " Auto change directory
 let NERDTreeChDirMode = 2
-autocmd BufEnter * lcd %:p:h
 map <leader>r :NERDTreeFind<cr>
-
-" NERDTress File highlighting
-function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
-exec 'autocmd FileType nerdtree highlight ' . a:extension .' ctermbg='. a:bg .' ctermfg='. a:fg .' guibg='. a:guibg .' guifg='. a:guifg
-exec 'autocmd FileType nerdtree syn match ' . a:extension .' #^\s\+.*'. a:extension .'$#'
-endfunction
 
 call NERDTreeHighlightFile('jade', 'green', 'none', 'green', '#151515')
 call NERDTreeHighlightFile('ini', 'yellow', 'none', 'yellow', '#151515')
@@ -256,9 +250,6 @@ let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git|bower_components|iisnod
 
 "Syntax libs
 let g:used_javascript_libs = 'angularjs,underscore,lodash'
-autocmd BufReadPre *.js let b:javascript_lib_use_underscore = 1
-autocmd BufReadPre *.js let b:javascript_lib_use_lodash = 1
-autocmd BufReadPre *.js let b:javascript_lib_use_angularjs = 1
 
 " Fugitive
 nnoremap <leader>gr :Gread<cr>
