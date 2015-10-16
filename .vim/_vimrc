@@ -8,6 +8,7 @@ Plug 'https://github.com/othree/javascript-libraries-syntax.vim'
 Plug 'jelera/vim-javascript-syntax'
 Plug 'scrooloose/syntastic'
 Plug 'vim-javascript'
+Plug 'nathanaelkane/vim-indent-guides'
 Plug 'maksimr/vim-jsbeautify'
 Plug 'einars/js-beautify'
 "TypeScript syntax
@@ -68,8 +69,17 @@ set nowritebackup                 " And again.
 set directory=$HOME/.vim/tmp//,.  " Keep swap files in one location
 set autochdir
 set laststatus=2                  " Show the status line all the time
+set ts=2 sw=2 et
+let g:indent_guides_start_level=2
 nnoremap <F3> :set hlsearch!<CR>
+" Shortcut to rapidly toggle `set list`
+nmap <leader>i :set list!<CR>
+" Use the same symbols as TextMate for tabstops and EOLs
+set listchars=tab:▸\ ,eol:¬
 
+let g:indent_guides_auto_colors = 0
+autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=red   ctermbg=3
+autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=4
 "          FileTypes
 "          HTML
 set matchpairs+=<:>
