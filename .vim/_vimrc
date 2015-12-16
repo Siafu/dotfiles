@@ -39,7 +39,7 @@ Plug 'mattn/emmet-vim'
 " Add plugins to &runtimepath
 call plug#end()
 " Defaults
-let mapleader=","                 " Mapp leader key 
+let mapleader=","                 " Mapp leader key
 set nocompatible                  " Must come first because it changes other options.
 syntax enable                     " Turn on syntax highlighting.
 filetype plugin indent on         " Turn on file type detection.
@@ -73,6 +73,8 @@ set softtabstop=2
 set matchpairs+=<:>
 set showmatch
 set matchtime=3
+set list
+set listchars=eol:¬
 
 autocmd! bufwritepost $HOME/_vimrc silent! source % " AutoSave
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
@@ -187,24 +189,24 @@ let NERDTreeShowHidden = 1
 let NERDTreeChDirMode = 2
 map <leader>r :NERDTreeFind<cr>
 
-call NERDTreeHighlightFile('jade', 'green', 'none', 'green', '#151515')
-call NERDTreeHighlightFile('ini', 'yellow', 'none', 'yellow', '#151515')
-call NERDTreeHighlightFile('md', 'blue', 'none', '#3366FF', '#151515')
-call NERDTreeHighlightFile('yml', 'yellow', 'none', 'yellow', '#151515')
-call NERDTreeHighlightFile('config', 'yellow', 'none', 'yellow', '#151515')
-call NERDTreeHighlightFile('conf', 'yellow', 'none', 'yellow', '#151515')
-call NERDTreeHighlightFile('json', 'yellow', 'none', 'yellow', '#151515')
-call NERDTreeHighlightFile('html', 'yellow', 'none', 'yellow', '#151515')
-call NERDTreeHighlightFile('styl', 'cyan', 'none', 'cyan', '#151515')
-call NERDTreeHighlightFile('css', 'cyan', 'none', 'cyan', '#151515')
-call NERDTreeHighlightFile('coffee', 'Red', 'none', 'red', '#151515')
-call NERDTreeHighlightFile('js', 'Red', 'none', '#ffa500', '#151515')
-call NERDTreeHighlightFile('php', 'Magenta', 'none', '#ff00ff', '#151515')
-call NERDTreeHighlightFile('ds_store', 'Gray', 'none', '#686868', '#151515')
-call NERDTreeHighlightFile('gitconfig', 'Gray', 'none', '#686868', '#151515')
-call NERDTreeHighlightFile('gitignore', 'Gray', 'none', '#686868', '#151515')
-call NERDTreeHighlightFile('bashrc', 'Gray', 'none', '#686868', '#151515')
-call NERDTreeHighlightFile('bashprofile', 'Gray', 'none', '#686868', '#151515')
+call NERDTreeHighlightFile('jade', 'green', 'none', 'green', '#263238')
+call NERDTreeHighlightFile('ini', 'yellow', 'none', 'yellow', '#263238')
+call NERDTreeHighlightFile('md', 'blue', 'none', '#3366FF', '#263238')
+call NERDTreeHighlightFile('yml', 'yellow', 'none', 'yellow', '#263238')
+call NERDTreeHighlightFile('config', 'yellow', 'none', 'yellow', '#263238')
+call NERDTreeHighlightFile('conf', 'yellow', 'none', 'yellow', '#263238')
+call NERDTreeHighlightFile('json', 'yellow', 'none', 'yellow', '#263238')
+call NERDTreeHighlightFile('html', 'yellow', 'none', 'yellow', '#263238')
+call NERDTreeHighlightFile('styl', 'cyan', 'none', 'cyan', '#263238')
+call NERDTreeHighlightFile('css', 'cyan', 'none', 'cyan', '#263238')
+call NERDTreeHighlightFile('coffee', 'Red', 'none', 'red', '#263238')
+call NERDTreeHighlightFile('js', 'Red', 'none', '#ffa500', '#263238')
+call NERDTreeHighlightFile('php', 'Magenta', 'none', '#ff00ff', '#263238')
+call NERDTreeHighlightFile('ds_store', 'Gray', 'none', '#686868', '#263238')
+call NERDTreeHighlightFile('gitconfig', 'Gray', 'none', '#686868', '#263238')
+call NERDTreeHighlightFile('gitignore', 'Gray', 'none', '#686868', '#263238')
+call NERDTreeHighlightFile('bashrc', 'Gray', 'none', '#686868', '#263238')
+call NERDTreeHighlightFile('bashprofile', 'Gray', 'none', '#686868', '#263238')
 
 "Vim-Angular
 let g:angular_source_directory = 'src/client'
